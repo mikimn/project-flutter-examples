@@ -1,5 +1,6 @@
 import 'dart:io';
 
+
 /*********************** CONST VS FINAL *********************/
 void constVsFinalExample() {
   var fullyMutable = [1,2,3];
@@ -68,10 +69,7 @@ void asyncAwaitExample() async {
 }
 
 
-/******************* ASYNC/AWAIT HANDLING *******************/
-
 /****************** GENERATORS AND STREAMS ******************/
-
 Iterable<int> syncCountDown(int number) sync* {
   while (number > 0) {
     sleep(const Duration(milliseconds: 500));
@@ -93,7 +91,6 @@ void generatorExample() {
 
   print('Done Sync...');
 }
-
 
 Stream<int> asyncCountDown(int number) async* {
   while (number > 0) {
@@ -118,7 +115,7 @@ void streamExample() {
 }
 
 
-/* FACTORY CONSTRUCTORS */
+/******************* FACTORY CONSTRUCTORS *******************/
 class Point {
   static final Map<String, Point> _cache = <String, Point>{};
   double x, y;
@@ -141,7 +138,7 @@ void factoryCtorExample() {
 }
 
 
-/* DART INTRO MAIN */
+/********************* DART INTRO MAIN **********************/
 void main() async {
   constVsFinalExample();
   await asyncAwaitExample();
