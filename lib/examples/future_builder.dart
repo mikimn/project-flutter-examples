@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +6,9 @@ class FutureBuilderExampleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Clock (StatefulWidget)"),
+        title: Text("FutureBuilder Example"),
       ),
-      body: Center(
-        child: FutureBuilderExample()
-      ),
+      body: Center(child: FutureBuilderExample()),
     );
   }
 }
@@ -24,7 +21,7 @@ class FutureBuilderExample extends StatefulWidget {
 class _FutureBuilderExampleState extends State<FutureBuilderExample> {
   Future<String> _calculation = Future<String>.delayed(
     Duration(seconds: 2),
-        () => 'Data Loaded',
+    () => 'Data Loaded',
   );
 
   Widget build(BuildContext context) {
@@ -83,5 +80,4 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
       ),
     );
   }
-
 }
