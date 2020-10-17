@@ -1,6 +1,8 @@
 import 'package:android_course/examples/clock.dart';
 import 'package:android_course/examples/future_builder.dart';
 import 'package:android_course/examples/provider/person_screen.dart';
+import 'package:android_course/examples/networking/pokemon_page.dart';
+import 'package:android_course/examples/animations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -175,5 +177,37 @@ class DecoratedText extends StatelessWidget {
           padding: EdgeInsets.all(8.0),
           child: child,
         ));
+  }
+}
+
+//********** App for networking example **********//
+class PokemonApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Pokemon - Networking Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: PokemonPage(),
+    );
+  }
+}
+
+//********** App for animations example **********//
+class AnimationsApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Animations Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: AnimationsPageOne(),
+    );
   }
 }
