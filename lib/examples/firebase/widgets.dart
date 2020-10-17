@@ -81,11 +81,10 @@ class GetUserNameRealtime extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: _getUser(),
-      initialData: null,
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         // ...
-        if (snapshot.hasData && snapshot.data != null) {
+        if (snapshot.hasData) {
           Map<String, dynamic> data = snapshot.data.data();
           return Text('Full Name: ${data['first_name']} ${data['last_name']}');
         }
@@ -103,6 +102,17 @@ class GetAllUsersRealtime extends StatelessWidget {
         (value) => value.docs); // Map the query result to the list of documents
   }
 
+  Future<void> _deleteUser(String userId) {
+    return db.collection('users').doc(userId).delete();
+  }
+
+  Future<void> _updateUserOccupation(String userId, String newOccupation) {
+    return db
+        .collection('users')
+        .doc(userId)
+        .update({'occupation': newOccupation});
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<QueryDocumentSnapshot>>(
@@ -111,16 +121,28 @@ class GetAllUsersRealtime extends StatelessWidget {
           AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
         // ...
         if (snapshot.hasData) {
-          List<QueryDocumentSnapshot> data = snapshot.data;
-          print(data);
+          final List<QueryDocumentSnapshot> data = snapshot.data;
           return SizedBox(
             height: 200.0,
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   final Map<String, dynamic> item = data[index].data();
+                  final userId = data[index].id;
                   return ListTile(
                     title: Text(
                         '${item['first_name']} ${item['last_name']}, ${item['occupation']}'),
+                    leading: IconButton(
+                      icon: Icon(Icons.thumb_down),
+                      onPressed: () {
+                        _updateUserOccupation(userId, 'Unemployed');
+                      },
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete_outlined),
+                      onPressed: () {
+                        _deleteUser(userId);
+                      },
+                    ),
                   );
                 },
                 separatorBuilder: (_, __) => Divider(),
