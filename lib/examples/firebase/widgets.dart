@@ -110,7 +110,7 @@ class GetAllUsersRealtime extends StatelessWidget {
       builder: (BuildContext context,
           AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
         // ...
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.hasData) {
           List<QueryDocumentSnapshot> data = snapshot.data;
           print(data);
           return SizedBox(
