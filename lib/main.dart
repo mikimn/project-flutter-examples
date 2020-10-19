@@ -1,10 +1,11 @@
+import 'package:android_course/examples/animations.dart';
 import 'package:android_course/examples/clock.dart';
 import 'package:android_course/examples/firebase/firebase_screen.dart';
 import 'package:android_course/examples/future_builder.dart';
-import 'package:android_course/examples/provider/person_screen.dart';
 import 'package:android_course/examples/networking/pokemon_page.dart';
-import 'package:android_course/examples/animations.dart';
+import 'package:android_course/examples/provider/person_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -50,6 +51,16 @@ class _MyHomePageState extends State<MyHomePage> {
     'Simple Provider (Person)': '/person_provider',
     'Firebase Examples': '/firebase'
   };
+
+  _sendTokenToServer(String token) {}
+
+  @override
+  void initState() {
+    // _sendTokenToServer is a function you must implement according to your needs.
+    // Usually, you can store the token for each user in your Cloud Firestore instance
+    final messaging = FirebaseMessaging();
+    messaging.onTokenRefresh.listen((token) => _sendTokenToServer(token));
+  }
 
   @override
   Widget build(BuildContext context) {
