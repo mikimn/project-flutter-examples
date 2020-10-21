@@ -29,7 +29,10 @@ class MyApp extends StatelessWidget {
         '/clock': (_) => ClockScreen(),
         '/future_builder': (_) => FutureBuilderExampleScreen(),
         '/person_provider': (_) => PersonScreen(),
-        '/firebase': (_) => FirebaseScreen()
+        '/firebase': (_) => FirebaseScreen(),
+        '/pokemon': (_) => PokemonPage(),
+        '/animations': (_) => AnimationsPageOne()
+
       },
     );
   }
