@@ -12,6 +12,10 @@ git clone https://github.com/mikimn/project-flutter-examples
 
 And either run it from Android Studio or simply `flutter run`.
 
+### Dart examples
+
+The Dart workshop examples are at `lib/examples/dart_intro.dart`. You can run them with the `dart` command or from [DartPad](https://dartpad.dev/)
+
 # License
 
 Copyright Miki Mendelson-Mints, 2020.
