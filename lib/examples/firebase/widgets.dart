@@ -143,7 +143,7 @@ class GetAllUsersRealtime extends StatelessWidget {
                       },
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.delete_outlined),
+                      icon: Icon(Icons.delete_outline),
                       onPressed: () {
                         _deleteUser(userId);
                       },
@@ -213,7 +213,7 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
                       ),
                 VerticalDivider(),
                 RaisedButton.icon(
-                  icon: Icon(Icons.upload_outlined),
+                  icon: Icon(Icons.cloud_upload),
                   label: Text('Upload new'),
                   onPressed: () async {
                     // Pick an image with the file_picker library

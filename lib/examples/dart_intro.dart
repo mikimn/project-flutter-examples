@@ -1,7 +1,7 @@
 import 'dart:io';
 
 
-/*********************** CONST VS FINAL *********************/
+/// *********************** CONST VS FINAL ***********************
 void constVsFinalExample() {
   var fullyMutable = [1,2,3];
   // Works fine
@@ -30,7 +30,7 @@ void constVsFinalExample() {
 }
 
 
-/******************* ASYNC/AWAIT HANDLING *******************/
+/// ******************* ASYNC/AWAIT HANDLING *******************
 Future<String> fetchUsername() async {
   return Future.delayed(
     Duration(seconds: 2),
@@ -69,7 +69,7 @@ void asyncAwaitExample() async {
 }
 
 
-/****************** GENERATORS AND STREAMS ******************/
+/// ****************** GENERATORS AND STREAMS ******************
 Iterable<int> syncCountDown(int number) sync* {
   while (number > 0) {
     sleep(const Duration(milliseconds: 500));
@@ -83,10 +83,10 @@ void generatorExample() {
   print('Starting Sync...');
 
   for (int value in syncSequence1) {
-    print('Generator 1: ${value}');
+    print('Generator 1: $value');
   }
   for (int value in syncSequence2) {
-    print('Generator 2: ${value}');
+    print('Generator 2: $value');
   }
 
   print('Done Sync...');
@@ -105,29 +105,29 @@ void streamExample() {
   print('Starting Async...');
 
   asyncSequence1.listen((int value) {
-    print('Stream 1: ${value}');
+    print('Stream 1: $value');
   });
   asyncSequence2.listen((int value) {
-    print('Stream 2: ${value}');
+    print('Stream 2: $value');
   });
 
   print('Done Async...');
 }
 
 
-/******************* FACTORY CONSTRUCTORS *******************/
+/// ******************* FACTORY CONSTRUCTORS *******************
 class Point {
   static final Map<String, Point> _cache = <String, Point>{};
   double x, y;
 
   factory Point(double x, double y) {
-    print('Point factory called: ${x},${y}');
+    print('Point factory called: $x,$y');
     return _cache.putIfAbsent(
-      '${x},${y}', () => Point._createInstance(x,y));
+      '$x,$y', () => Point._createInstance(x,y));
   }
 
   Point._createInstance(this.x, this.y) {
-    print('Create Instance called: ${x},${y}');
+    print('Create Instance called: $x,$y');
   }
 }
 
@@ -138,11 +138,11 @@ void factoryCtorExample() {
 }
 
 
-/********************* DART INTRO MAIN **********************/
+/// ******************* DART INTRO MAIN *******************
 void main() async {
   constVsFinalExample();
-  await asyncAwaitExample();
-  await generatorExample();
-  await streamExample();
+  asyncAwaitExample();
+  generatorExample();
+  streamExample();
   factoryCtorExample();
 }

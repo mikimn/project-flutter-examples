@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    super.initState();
     // _sendTokenToServer is a function you must implement according to your needs.
     // Usually, you can store the token for each user in your Cloud Firestore instance
     final messaging = FirebaseMessaging();
@@ -102,7 +103,7 @@ class DecoratedText extends StatelessWidget {
   }
 }
 
-//********** App for networking example **********//
+/// ********** App for networking example **********
 class PokemonApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -118,7 +119,7 @@ class PokemonApp extends StatelessWidget {
   }
 }
 
-//********** App for animations example **********//
+/// ********** App for animations example **********
 class AnimationsApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
