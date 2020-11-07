@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'FutureBuilder': '/future_builder',
     'Simple Provider (Person)': '/person_provider',
     'Firebase Examples': '/firebase',
-    'Pokemon Example': '/pokemon',
+    'Pokemon Example (HTTP requests)': '/pokemon',
     'Animations Example': '/animations'
   };
 
@@ -78,11 +78,17 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: routes.entries
-                    .map((e) => RaisedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, e.value);
-                        },
-                        child: Text(e.key)))
+                    .map((e) => Row(
+                          children: [
+                            Expanded(
+                              child: RaisedButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, e.value);
+                                  },
+                                  child: Text(e.key)),
+                            ),
+                          ],
+                        ))
                     .toList()),
           ),
         ));
