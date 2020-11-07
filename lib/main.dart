@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    super.initState();
     // _sendTokenToServer is a function you must implement according to your needs.
     // Usually, you can store the token for each user in your Cloud Firestore instance
     final messaging = FirebaseMessaging();
