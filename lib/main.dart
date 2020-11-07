@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
         '/firebase': (_) => FirebaseScreen(),
         '/pokemon': (_) => PokemonPage(),
         '/animations': (_) => AnimationsPageOne()
-
       },
     );
   }
@@ -52,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
     'StatefulWidget (Clock)': '/clock',
     'FutureBuilder': '/future_builder',
     'Simple Provider (Person)': '/person_provider',
-    'Firebase Examples': '/firebase'
+    'Firebase Examples': '/firebase',
+    'Pokemon Example': '/pokemon',
+    'Animations Example': '/animations'
   };
 
   _sendTokenToServer(String token) {}
@@ -102,37 +103,5 @@ class DecoratedText extends StatelessWidget {
           padding: EdgeInsets.all(8.0),
           child: child,
         ));
-  }
-}
-
-//********** App for networking example **********//
-class PokemonApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pokemon - Networking Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: PokemonPage(),
-    );
-  }
-}
-
-//********** App for animations example **********//
-class AnimationsApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Animations Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: AnimationsPageOne(),
-    );
   }
 }

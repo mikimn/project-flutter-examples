@@ -1,17 +1,19 @@
-import 'dart:async';
 import 'dart:convert';
+
 import 'package:android_course/examples/networking/pokemon_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PokemonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Pokemons!')
+    return Provider.value(
+      value: PokemonService(),
+      child: Scaffold(
+        appBar: AppBar(title: Text('Pokemons!')),
+        body: _PokemonList(),
       ),
-      body: _PokemonList(),
     );
   }
 }
@@ -22,7 +24,6 @@ class _PokemonList extends StatefulWidget {
 }
 
 class _PokemonListState extends State<_PokemonList> {
-  StreamController<Pokemon> _streamController;
   List<Pokemon> _pokemons = [];
   List<Pokemon> _liked = [];
 
@@ -30,53 +31,50 @@ class _PokemonListState extends State<_PokemonList> {
   void initState() {
     super.initState();
     this._getLiked();
-    _streamController = StreamController.broadcast();
-    _streamController.stream.listen((p) => setState(() => _pokemons.add(p)));
-    _load(_streamController);
-  }
-
-  _load(StreamController<Pokemon> streamController) async {
-    PokemonServices.pokemons.pipe(streamController);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _streamController?.close();
-    _streamController = null;
   }
 
   void _getLiked() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     this._liked =
-      (json.decode(prefs.getString('liked_pokemon') ?? '[]') as List)
-        .map((entry) => Pokemon.fromJson(entry))
-        .toList();
+        (json.decode(prefs.getString('liked_pokemon') ?? '[]') as List)
+            .map((entry) => Pokemon.fromJson(entry))
+            .toList();
   }
 
   void _saveLiked() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('liked_pokemon', json.encode(this._liked));
-    debugDumpRenderTree();
+    // debugDumpRenderTree();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemBuilder: (BuildContext context, int index) {
-        if (index >= _pokemons.length) {
-          return null;
-        }
-        return _listElement(_pokemons[index]);
-      }
-    );
+    return Consumer<PokemonService>(
+        builder: (context, service, _) => StreamBuilder(
+            initialData: [],
+            stream: service.pokemons.map((pokemon) {
+              _pokemons.add(pokemon);
+              return _pokemons;
+            }),
+            builder: (context, snapshot) {
+              return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index > _pokemons.length) {
+                      return null;
+                    } else if (index == _pokemons.length) {
+                      return LinearProgressIndicator();
+                    }
+                    return _listElement(_pokemons[index]);
+                  });
+            }));
   }
 
   Widget _listElement(Pokemon pokemon) {
     final liked = _liked.contains(pokemon);
     return ListTile(
-      title: Text('${pokemon.name[0].toUpperCase()+pokemon.name.substring(1).toLowerCase()}',
+      title: Text(
+        '${pokemon.name[0].toUpperCase() + pokemon.name.substring(1).toLowerCase()}',
         style: TextStyle(fontSize: 22),
       ),
       trailing: Icon(
@@ -96,4 +94,3 @@ class _PokemonListState extends State<_PokemonList> {
     );
   }
 }
-
