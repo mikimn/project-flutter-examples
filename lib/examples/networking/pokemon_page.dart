@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:android_course/examples/networking/pokemon_services.dart';
+import 'package:android_course/examples/networking/pokemon_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,8 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PokemonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider.value(
-      value: PokemonService(),
+    return Provider(
+      create: (_) => PokemonService(),
       child: Scaffold(
         appBar: AppBar(title: Text('Pokemons!')),
         body: _PokemonList(),
@@ -44,7 +44,6 @@ class _PokemonListState extends State<_PokemonList> {
   void _saveLiked() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('liked_pokemon', json.encode(this._liked));
-    // debugDumpRenderTree();
   }
 
   @override
