@@ -4,6 +4,7 @@ import 'package:android_course/examples/firebase/firebase_screen.dart';
 import 'package:android_course/examples/future_builder.dart';
 import 'package:android_course/examples/networking/pokemon_page.dart';
 import 'package:android_course/examples/provider/person_screen.dart';
+import 'package:android_course/examples/ui/slivers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
         '/person_provider': (_) => PersonScreen(),
         '/firebase': (_) => FirebaseScreen(),
         '/pokemon': (_) => PokemonPage(),
-        '/animations': (_) => AnimationsPageOne()
+        '/animations': (_) => AnimationsPageOne(),
+        '/slivers': (_) => SliversPage()
       },
     );
   }
@@ -53,7 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
     'Simple Provider (Person)': '/person_provider',
     'Firebase Examples': '/firebase',
     'Pokemon Example (HTTP requests)': '/pokemon',
-    'Animations Example': '/animations'
+    'Animations Example': '/animations',
+    'Slivers': '/slivers'
   };
 
   _sendTokenToServer(String token) {}
