@@ -34,32 +34,43 @@ class GetUserName extends StatelessWidget {
   }
 }
 
+class MyUser {
+  String firstName;
+  String lastName;
+  String occupation;
+
+  MyUser(this.firstName, this.lastName, this.occupation);
+
+  MyUser.fromJson(Map<String, dynamic> m)
+      : this(m['first_name'], m['last_name'], m['occupation']);
+}
+
 class GetAllUsers extends StatelessWidget {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<List<QueryDocumentSnapshot>> _getAllUsers() {
-    return db.collection('users').get().then(
-        (value) => value.docs); // Map the query result to the list of documents
+  Future<List<MyUser>> _getAllUsers() {
+    return db.collection('users').get().then((value) => value.docs
+        .map((e) => MyUser.fromJson({...?e.data()}))
+        .toList()); // Map the query result to the list of documents
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<QueryDocumentSnapshot>>(
+    return FutureBuilder<List<MyUser>>(
       future: _getAllUsers(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<MyUser>> snapshot) {
         // ...
         if (snapshot.connectionState == ConnectionState.done) {
-          List<QueryDocumentSnapshot> data = snapshot.data;
+          List<MyUser> data = snapshot.data;
           print(data);
           return SizedBox(
             height: 200.0,
             child: ListView.separated(
                 itemBuilder: (context, index) {
-                  final Map<String, dynamic> item = data[index].data();
+                  final MyUser item = data[index];
                   return ListTile(
                     title: Text(
-                        '${item['first_name']} ${item['last_name']}, ${item['occupation']}'),
+                        '${item.firstName} ${item.lastName}, ${item.occupation}'),
                   );
                 },
                 separatorBuilder: (_, __) => Divider(),
