@@ -44,6 +44,7 @@ dependencies:
   camera: ^0.5.8+11
   gallery_saver: ^2.0.1
   connectivity: ^2.0.1
+  location: ^3.1.0
 
 dev_dependencies:
   flutter_test:

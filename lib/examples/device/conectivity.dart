@@ -18,9 +18,7 @@ class ConnectivityRepository with ChangeNotifier {
 
   @override
   void dispose() {
-    if (_subscription != null) {
-      _subscription.cancel();
-    }
+    _subscription.cancel();
     super.dispose();
   }
 
