@@ -40,6 +40,10 @@ dependencies:
   shared_preferences: ^0.5.12
   flutter_html: ^1.0.0
   file_picker: ^2.0.8
+  path_provider: ^1.6.24
+  camera: ^0.5.8+11
+  gallery_saver: ^2.0.1
+  connectivity: ^2.0.1
 
 dev_dependencies:
   flutter_test:

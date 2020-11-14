@@ -1,13 +1,18 @@
 import 'package:android_course/examples/animations.dart';
 import 'package:android_course/examples/clock.dart';
+import 'package:android_course/examples/device/camera.dart';
+import 'package:android_course/examples/device/camera_repository.dart';
+import 'package:android_course/examples/device/conectivity.dart';
 import 'package:android_course/examples/firebase/firebase_screen.dart';
 import 'package:android_course/examples/future_builder.dart';
 import 'package:android_course/examples/networking/pokemon_page.dart';
 import 'package:android_course/examples/provider/person_screen.dart';
 import 'package:android_course/examples/ui/slivers.dart';
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,22 +24,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ConnectivityRepository()),
+        FutureProvider(
+            create: (_) =>
+                availableCameras().then((cameras) => CameraRepository(cameras)))
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        routes: {
+          '/': (_) => MyHomePage(title: 'Flutter Demo Home Page'),
+          '/clock': (_) => ClockScreen(),
+          '/future_builder': (_) => FutureBuilderExampleScreen(),
+          '/person_provider': (_) => PersonScreen(),
+          '/firebase': (_) => FirebaseScreen(),
+          '/pokemon': (_) => PokemonPage(),
+          '/animations': (_) => AnimationsPageOne(),
+          '/slivers': (_) => SliversPage(),
+          '/camera': (_) => CameraExamplesPage(),
+          '/connectivity': (_) => ConnectivityPage()
+        },
       ),
-      routes: {
-        '/': (_) => MyHomePage(title: 'Flutter Demo Home Page'),
-        '/clock': (_) => ClockScreen(),
-        '/future_builder': (_) => FutureBuilderExampleScreen(),
-        '/person_provider': (_) => PersonScreen(),
-        '/firebase': (_) => FirebaseScreen(),
-        '/pokemon': (_) => PokemonPage(),
-        '/animations': (_) => AnimationsPageOne(),
-        '/slivers': (_) => SliversPage()
-      },
     );
   }
 }
@@ -56,7 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
     'Firebase Examples': '/firebase',
     'Pokemon Example (HTTP requests)': '/pokemon',
     'Animations Example': '/animations',
-    'Slivers': '/slivers'
+    'Slivers': '/slivers',
+    'Camera': '/camera',
+    'Connectivity': '/connectivity'
   };
 
   _sendTokenToServer(String token) {}
