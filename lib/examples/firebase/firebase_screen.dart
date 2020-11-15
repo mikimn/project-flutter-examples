@@ -26,7 +26,9 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
     _FirebaseExample('Realtime get', (context) => GetUserNameRealtime(userId)),
     _FirebaseExample(
         'Read all documents (realtime)', (context) => GetAllUsersRealtime()),
-    _FirebaseExample('Cloud Storage', (context) => CloudStorageUploader())
+    _FirebaseExample('Cloud Storage', (context) => CloudStorageUploader()),
+    _FirebaseExample(
+        'Transaction Read/Write', (context) => TransactionReadWrite())
   ];
 
   @override

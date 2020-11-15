@@ -255,3 +255,79 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
     );
   }
 }
+
+class TransactionReadWrite extends StatefulWidget {
+  @override
+  _TransactionReadWriteState createState() => _TransactionReadWriteState();
+}
+
+class _TransactionReadWriteState extends State<TransactionReadWrite> {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: StreamBuilder<Map<String, dynamic>>(
+            stream: _db
+                .collection('counters')
+                .doc('global-counter')
+                .snapshots()
+                .map((event) => event.data()),
+            initialData: {'value': 'Loading...'},
+            builder: (context, snapshot) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlineButton(
+                    highlightedBorderColor: Colors.green,
+                    child: Text(
+                      '+ Counter (${snapshot.data['value']})',
+                      style: TextStyle(color: Colors.green),
+                    ),
+                    onPressed: _doTransaction,
+                  ),
+                  VerticalDivider(),
+                  OutlineButton(
+                    highlightedBorderColor: Colors.red,
+                    child: Text('- Counter (${snapshot.data['value']})',
+                        style: TextStyle(color: Colors.red)),
+                    onPressed: () => _doTransaction(isSubstraction: true),
+                  ),
+                ],
+              );
+            }),
+      ),
+    );
+  }
+
+  Future<void> _doTransaction({bool isSubstraction = false}) async {
+    // Create a reference to the document the transaction will use
+    DocumentReference documentReference =
+        _db.collection('counters').doc('global-counter');
+
+    return _db
+        .runTransaction((transaction) async {
+          // Get the document
+          DocumentSnapshot snapshot = await transaction.get(documentReference);
+
+          if (!snapshot.exists) {
+            throw Exception('User does not exist!');
+          }
+
+          // Update the follower count based on the current count
+          // Note: this could be done without a transaction
+          // by updating the population using FieldValue.increment()
+          int oldCount = snapshot.data()['value'];
+          int newCount = isSubstraction ? oldCount - 1 : oldCount + 1;
+
+          // Perform an update on the document
+          transaction.update(documentReference, {'value': newCount});
+
+          // Return the new count
+          return newCount;
+        })
+        .then((value) => print('Counter updated to $value'))
+        .catchError((error) => print('Failed to update counter: $error'));
+  }
+}
