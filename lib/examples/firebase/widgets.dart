@@ -312,12 +312,12 @@ class _TransactionReadWriteState extends State<TransactionReadWrite> {
           DocumentSnapshot snapshot = await transaction.get(documentReference);
 
           if (!snapshot.exists) {
-            throw Exception('User does not exist!');
+            throw Exception('Counter does not exist!');
           }
 
-          // Update the follower count based on the current count
+          // Update the counter based on the current value
           // Note: this could be done without a transaction
-          // by updating the population using FieldValue.increment()
+          // by updating the field using FieldValue.increment()
           int oldCount = snapshot.data()['value'];
           int newCount = isSubstraction ? oldCount - 1 : oldCount + 1;
 
