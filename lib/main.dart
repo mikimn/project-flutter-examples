@@ -3,6 +3,7 @@ import 'package:android_course/examples/clock.dart';
 import 'package:android_course/examples/device/camera.dart';
 import 'package:android_course/examples/device/camera_repository.dart';
 import 'package:android_course/examples/device/conectivity.dart';
+import 'package:android_course/examples/device/location.dart';
 import 'package:android_course/examples/firebase/firebase_screen.dart';
 import 'package:android_course/examples/future_builder.dart';
 import 'package:android_course/examples/networking/pokemon_page.dart';
@@ -28,8 +29,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ConnectivityRepository()),
         FutureProvider(
-            create: (_) =>
-                availableCameras().then((cameras) => CameraRepository(cameras)))
+            create: (_) => availableCameras()
+                .then((cameras) => CameraRepository(cameras))),
+        FutureProvider(create: (_) => LocationRepository.getRepository())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -47,7 +49,8 @@ class MyApp extends StatelessWidget {
           '/animations': (_) => AnimationsPageOne(),
           '/slivers': (_) => SliversPage(),
           '/camera': (_) => CameraExamplesPage(),
-          '/connectivity': (_) => ConnectivityPage()
+          '/connectivity': (_) => ConnectivityPage(),
+          '/location': (_) => LocationScreen()
         },
       ),
     );
@@ -73,7 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
     'Animations Example': '/animations',
     'Slivers': '/slivers',
     'Camera': '/camera',
-    'Connectivity': '/connectivity'
+    'Connectivity': '/connectivity',
+    'Location': '/location'
   };
 
   _sendTokenToServer(String token) {}
