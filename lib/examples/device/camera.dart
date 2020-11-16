@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:android_course/examples/device/camera_repository.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path/path.dart' as paths;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -92,17 +93,17 @@ class _CameraDisplayState extends State<CameraDisplay> {
                       color: Colors.white,
                       icon: Icon(Icons.camera),
                       onPressed: () async {
+                        final String imageName = '${DateTime.now()}.png';
                         final String path = paths.join(
                           (await getTemporaryDirectory()).path,
-                          '${DateTime.now()}.png',
+                          imageName,
                         );
 
-                        await controller
-                            .takePicture(path)
-                            .then((value) => GallerySaver.saveImage(path))
-                            .then((bool saved) {
-                          print('Saved: $saved');
-                        });
+                        controller.takePicture(path).then((value) async {
+                          final File imageFile = File(path);
+                          _showImageDialog(context, imageFile);
+                          return imageFile;
+                        }).catchError((error) => print('Error: $error'));
                       })
                 ],
               ),
@@ -138,5 +139,21 @@ class _CameraDisplayState extends State<CameraDisplay> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void _showImageDialog(BuildContext context, File imageFile) {
+    showDialog(
+        context: context,
+        builder: (context) => Container(
+            margin: EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppBar(
+                  title: Text('Captured Image'),
+                ),
+                Image.file(imageFile),
+              ],
+            )));
   }
 }

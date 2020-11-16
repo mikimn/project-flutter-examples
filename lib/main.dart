@@ -21,17 +21,24 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  LocationRepository _locationRepository;
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ConnectivityRepository()),
         FutureProvider(
+            initialData: CameraRepository([]),
             create: (_) => availableCameras()
                 .then((cameras) => CameraRepository(cameras))),
-        FutureProvider(create: (_) => LocationRepository.getRepository())
+        FutureProvider(create: (_) => _getLocationRepository())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -54,6 +61,21 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // if (_locationRepository != null) {
+    //   _locationRepository.dispose();
+    // }
+    super.dispose();
+  }
+
+  Future<LocationRepository> _getLocationRepository() {
+    return LocationRepository.getRepository().then((value) {
+      _locationRepository = value;
+      return value;
+    });
   }
 }
 

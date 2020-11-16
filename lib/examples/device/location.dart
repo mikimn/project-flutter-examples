@@ -1,17 +1,18 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
-class LocationRepository with ChangeNotifier {
+class LocationRepository {
   Location _location = new Location();
   bool serviceEnabled;
   PermissionStatus permissionStatus;
-  LocationData _locationData;
   StreamSubscription _subscription;
+
+  StreamController<LocationData> _streamController =
+      StreamController<LocationData>();
 
   static Future<LocationRepository> getRepository() async {
     bool _serviceEnabled;
@@ -26,10 +27,6 @@ class LocationRepository with ChangeNotifier {
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
-      if (_permissionGranted == PermissionStatus.granted ||
-          _permissionGranted == PermissionStatus.grantedLimited) {
-        await location.changeSettings();
-      }
     }
 
     return LocationRepository._(_serviceEnabled, _permissionGranted);
@@ -37,18 +34,21 @@ class LocationRepository with ChangeNotifier {
 
   LocationRepository._(this.serviceEnabled, this.permissionStatus) {
     _subscription = _location.onLocationChanged.listen((event) {
-      _locationData = event;
       print('new location: $event');
-      notifyListeners();
+      _streamController.sink.add(event);
     });
+
+    _location.changeSettings(
+      accuracy: LocationAccuracy.powerSave,
+      interval: 10000, // Every 10 seconds
+    );
   }
 
-  LocationData get locationData => _locationData;
+  Stream<LocationData> get locationData => _streamController.stream;
 
-  @override
   void dispose() {
     _subscription.cancel();
-    super.dispose();
+    _streamController.close();
   }
 }
 
@@ -63,40 +63,43 @@ class _LocationScreenState extends State<LocationScreen> {
     zoom: 14.4746,
   );
 
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
   Completer<GoogleMapController> _controller = Completer();
 
   @override
   Widget build(BuildContext context) {
     return Consumer<LocationRepository>(
-      builder: (context, repository, _) => Scaffold(
-        appBar: AppBar(
-          title: Text('Location Example'),
-        ),
-        body: Container(
-          child: GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-              // final location = repository?.locationData;
-              // controller.moveCamera(CameraUpdate.newLatLng(
-              //     LatLng(location?.latitude ?? 0, location?.longitude ?? 0)));
-            },
-          ),
-        ),
-        bottomSheet: Card(
-          child:
-              Text('Location is (${repository?.locationData?.latitude ?? '-'}, '
-                  '${repository?.locationData?.longitude ?? '-'}), '
-                  'Heading = ${repository?.locationData?.heading ?? '-'}'),
-        ),
-      ),
+      builder: (context, repository, _) => StreamBuilder<LocationData>(
+          stream: repository.locationData,
+          builder: (context, snapshot) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Location Example'),
+              ),
+              body: Container(
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: _kGooglePlex,
+                  myLocationEnabled: true,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                    // final location = repository?.locationData;
+                    // controller.moveCamera(CameraUpdate.newLatLng(
+                    //     LatLng(location?.latitude ?? 0, location?.longitude ?? 0)));
+                  },
+                ),
+              ),
+              bottomSheet: Material(
+                elevation: 6.0,
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  child:
+                      Text('Location is (${snapshot?.data?.latitude ?? '-'}, '
+                          '${snapshot?.data?.longitude ?? '-'}), '
+                          'Heading = ${snapshot?.data?.heading ?? '-'}'),
+                ),
+              ),
+            );
+          }),
     );
   }
 }
