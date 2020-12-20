@@ -25,7 +25,8 @@ class GetUserName extends StatelessWidget {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         // ...
         if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data.data();
+          Map<String, dynamic> data = snapshot.data?.data() ??
+              {'first_name': 'unknown', 'last_name': 'unknown'};
           return Text('Full Name: ${data['first_name']} ${data['last_name']}');
         }
         return CircularProgressIndicator();
@@ -101,7 +102,8 @@ class GetUserNameRealtime extends StatelessWidget {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         // ...
         if (snapshot.hasData) {
-          Map<String, dynamic> data = snapshot.data.data();
+          Map<String, dynamic> data = snapshot.data?.data() ??
+              {'first_name': 'unknown', 'last_name': 'unknown'};
           return Text('Full Name: ${data['first_name']} ${data['last_name']}');
         }
         return CircularProgressIndicator();

@@ -40,7 +40,9 @@ class ConnectivityPage extends StatelessWidget {
             Container(
               child: Center(
                 child: Text(
-                    'Connection status is: ${connectivity.status.toString()}'),
+                  'Connection status is: ${connectivity.status.toString()}',
+                  style: TextStyle(fontSize: 22.0),
+                ),
               ),
             ),
             Positioned(

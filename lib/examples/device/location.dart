@@ -77,7 +77,7 @@ class _LocationScreenState extends State<LocationScreen> {
               ),
               body: Container(
                 child: GoogleMap(
-                  mapType: MapType.normal,
+                  mapType: MapType.hybrid,
                   initialCameraPosition: _kGooglePlex,
                   myLocationEnabled: true,
                   onMapCreated: (GoogleMapController controller) {

@@ -20,7 +20,7 @@ class FirebaseScreen extends StatefulWidget {
 class _FirebaseScreenState extends State<FirebaseScreen> {
   int _selectedIndex = 0;
 
-  static const userId = '2maQZymrc6c2qws7zZ68';
+  static const userId = 'ybftiB2mepd0Eh8JljJI';
 
   final List<_FirebaseExample> info = [
     _FirebaseExample('One-time get', (context) => GetUserName(userId)),
