@@ -10,14 +10,13 @@ import 'package:android_course/examples/networking/pokemon_page.dart';
 import 'package:android_course/examples/provider/person_screen.dart';
 import 'package:android_course/examples/ui/slivers.dart';
 import 'package:camera/camera.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -28,7 +27,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  LocationRepository _locationRepository;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -39,7 +37,7 @@ class _MyAppState extends State<MyApp> {
             initialData: CameraRepository([]),
             create: (_) => availableCameras()
                 .then((cameras) => CameraRepository(cameras))),
-        FutureProvider(create: (_) => _getLocationRepository())
+        FutureProvider(create: (_) => LocationRepository.getRepository())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -78,13 +76,6 @@ class _MyAppState extends State<MyApp> {
     //   _locationRepository.dispose();
     // }
     super.dispose();
-  }
-
-  Future<LocationRepository> _getLocationRepository() {
-    return LocationRepository.getRepository().then((value) {
-      _locationRepository = value;
-      return value;
-    });
   }
 }
 
@@ -126,39 +117,63 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 85.0,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.title),
-              Text(
-                widget.subtitle,
-                style: Theme.of(context).textTheme.subtitle1,
-              )
-            ],
+      appBar: AppBar(
+        toolbarHeight: 85.0,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.title),
+            Text(
+              widget.subtitle,
+              style: Theme.of(context).textTheme.subtitle1,
+            )
+          ],
+        ),
+      ),
+      body: Center(
+        child: GridView(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, childAspectRatio: 2),
+            children: routes.entries
+                .map((e) => Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        child: RaisedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, e.value);
+                            },
+                            color: Colors.green,
+                            child: Text(e.key)),
+                      ),
+                    ))
+                .toList()),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        child: Builder(
+          builder: (context) => Container(
+            height: 75,
+            child: IconButton(
+              tooltip: 'App Information',
+              iconSize: 30.0,
+              icon: Icon(Icons.info_outline_rounded),
+              onPressed: () async {
+                PackageInfo packageInfo = await PackageInfo.fromPlatform();
+                if (packageInfo != null) {
+                  showAboutDialog(
+                      context: context,
+                      applicationName: 'Workshop Examples in Flutter',
+                      applicationVersion: packageInfo.version,
+                      applicationIcon: FlutterLogo(),
+                      applicationLegalese:
+                          'Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC');
+                }
+              },
+            ),
           ),
         ),
-        body: Center(
-          child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, childAspectRatio: 2),
-              children: routes.entries
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          child: Expanded(
-                            child: RaisedButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, e.value);
-                                },
-                                color: Colors.green,
-                                child: Text(e.key)),
-                          ),
-                        ),
-                      ))
-                  .toList()),
-        ));
+      ),
+    );
   }
 }
 

@@ -1,4 +1,9 @@
 name: android_course
+authors:
+  - Miki Mendelson-Mints
+  - Boris Goldin
+homepage: https://github.com/mikimn/project-flutter-examples
+repository: https://github.com/mikimn/project-flutter-examples
 description: A collection of examples for the Project in Android workshops
 
 # The following line prevents the package from being accidentally published to
@@ -48,6 +53,8 @@ dependencies:
   google_maps_flutter: ^1.0.6
 
   permission_handler: ^5.0.1+1
+
+  package_info: ^0.4.3+2
 
 dev_dependencies:
   flutter_test:

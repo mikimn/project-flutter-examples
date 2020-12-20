@@ -3,11 +3,11 @@ import 'package:android_course/examples/firebase/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-typedef Builder = Widget Function(BuildContext);
+typedef _Builder = Widget Function(BuildContext);
 
 class _FirebaseExample {
   final String name;
-  final Builder builder;
+  final _Builder builder;
 
   _FirebaseExample(this.name, this.builder);
 }
