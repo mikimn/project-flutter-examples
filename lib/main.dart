@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
   LocationRepository _locationRepository;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ConnectivityRepository()),
@@ -43,11 +44,19 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+            primarySwatch: Colors.brown,
+            accentColor: Colors.green,
+            buttonTheme: theme.buttonTheme.copyWith(
+              buttonColor: Colors.green,
+              textTheme: ButtonTextTheme.primary,
+            ),
+            textTheme: theme.textTheme.copyWith(
+                subtitle1: theme.textTheme.subtitle1
+                    .copyWith(color: Colors.grey.shade300))),
         routes: {
-          '/': (_) => MyHomePage(title: 'Flutter Demo Home Page'),
+          '/': (_) => MyHomePage(
+              title: 'Workshop Examples in Flutter',
+              subtitle: 'Project in Android, Winter 2020/21, Technion CS'),
           '/clock': (_) => ClockScreen(),
           '/future_builder': (_) => FutureBuilderExampleScreen(),
           '/person_provider': (_) => PersonScreen(),
@@ -80,9 +89,10 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.subtitle}) : super(key: key);
 
   final String title;
+  final String subtitle;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -117,27 +127,37 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          toolbarHeight: 85.0,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.title),
+              Text(
+                widget.subtitle,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            ],
+          ),
         ),
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: routes.entries
-                    .map((e) => Row(
-                          children: [
-                            Expanded(
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, e.value);
-                                  },
-                                  child: Text(e.key)),
-                            ),
-                          ],
-                        ))
-                    .toList()),
-          ),
+          child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, childAspectRatio: 2),
+              children: routes.entries
+                  .map((e) => Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          child: Expanded(
+                            child: RaisedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, e.value);
+                                },
+                                color: Colors.green,
+                                child: Text(e.key)),
+                          ),
+                        ),
+                      ))
+                  .toList()),
         ));
   }
 }
