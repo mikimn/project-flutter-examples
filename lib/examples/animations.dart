@@ -14,8 +14,8 @@ class _AnimationsPageOneState extends State<AnimationsPageOne>
     super.initState();
 
     _controller = AnimationController(
-      vsync: this, // the SingleTickerProviderStateMixin
       duration: Duration(seconds: 1),
+      vsync: this
     )..addListener(() {
         setState(() {});
       });
