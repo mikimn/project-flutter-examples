@@ -167,8 +167,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       applicationIcon: FlutterLogo(),
                       applicationLegalese:
                           'Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC'
-                              '\n\n'
-                              'The Technion logo is a trademark of the Technion, Israel Institue of Technology, and is used for academic purposes only');
+                          '\n\n'
+                          'The Technion logo is a trademark of the Technion, Israel Institue of Technology, and is used for academic purposes only'
+                          '\n\n'
+                          'App icon designed by Freepik from Flaticon');
                 }
               },
             ),

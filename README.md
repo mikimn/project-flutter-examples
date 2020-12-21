@@ -3,10 +3,15 @@
 A Flutter application, containing various examples taught in class for the 
 Technion CS Faculty "Project in Android Development" course workshops.
 
+## Table of Contents
+
+* [Privacy Policy](docs/policy.md)
+* [Terms of Service](docs/tos.md)
+
 ## Getting Started
 
 The use this locally, clone this repository
-```
+```bash script
 git clone https://github.com/mikimn/project-flutter-examples
 ```
 
