@@ -10,6 +10,7 @@ import 'package:android_course/examples/networking/pokemon_page.dart';
 import 'package:android_course/examples/provider/person_screen.dart';
 import 'package:android_course/examples/ui/slivers.dart';
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -17,6 +18,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
