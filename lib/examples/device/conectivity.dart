@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ConnectivityRepository with ChangeNotifier {
   final _connectivity = Connectivity();
   ConnectivityResult _connectivityResult = ConnectivityResult.wifi;
-  StreamSubscription _subscription;
+  late StreamSubscription _subscription;
 
   ConnectivityRepository() {
     _subscription = _connectivity.onConnectivityChanged.listen((event) {

@@ -39,7 +39,9 @@ class _MyAppState extends State<MyApp> {
             initialData: CameraRepository([]),
             create: (_) => availableCameras()
                 .then((cameras) => CameraRepository(cameras))),
-        FutureProvider(create: (_) => LocationRepository.getRepository())
+        FutureProvider(
+            initialData: LocationRepository.stub(),
+            create: (_) => LocationRepository.getRepository())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -51,7 +53,7 @@ class _MyAppState extends State<MyApp> {
               textTheme: ButtonTextTheme.primary,
             ),
             textTheme: theme.textTheme.copyWith(
-                subtitle1: theme.textTheme.subtitle1
+                subtitle1: theme.textTheme.subtitle1!
                     .copyWith(color: Colors.grey.shade300))),
         routes: {
           '/': (_) => MyHomePage(
@@ -82,10 +84,10 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.subtitle}) : super(key: key);
+  MyHomePage({Key? key, this.title, this.subtitle}) : super(key: key);
 
-  final String title;
-  final String subtitle;
+  final String? title;
+  final String? subtitle;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -112,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     // _sendTokenToServer is a function you must implement according to your needs.
     // Usually, you can store the token for each user in your Cloud Firestore instance
-    final messaging = FirebaseMessaging();
+    final messaging = FirebaseMessaging.instance;
     messaging.onTokenRefresh.listen((token) => _sendTokenToServer(token));
   }
 
@@ -124,9 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.title),
+            Text(widget.title!),
             Text(
-              widget.subtitle,
+              widget.subtitle!,
               style: Theme.of(context).textTheme.subtitle1,
             )
           ],

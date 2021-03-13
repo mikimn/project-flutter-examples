@@ -9,10 +9,14 @@ class LocationRepository {
   Location _location = new Location();
   bool serviceEnabled;
   PermissionStatus permissionStatus;
-  StreamSubscription _subscription;
+  late StreamSubscription _subscription;
 
   StreamController<LocationData> _streamController =
       StreamController<LocationData>();
+
+  static LocationRepository stub() {
+    return LocationRepository._(false, PermissionStatus.denied);
+  }
 
   static Future<LocationRepository> getRepository() async {
     bool _serviceEnabled;
@@ -92,10 +96,9 @@ class _LocationScreenState extends State<LocationScreen> {
                 elevation: 6.0,
                 child: Container(
                   padding: EdgeInsets.all(16.0),
-                  child:
-                      Text('Location is (${snapshot?.data?.latitude ?? '-'}, '
-                          '${snapshot?.data?.longitude ?? '-'}), '
-                          'Heading = ${snapshot?.data?.heading ?? '-'}'),
+                  child: Text('Location is (${snapshot.data?.latitude ?? '-'}, '
+                      '${snapshot.data?.longitude ?? '-'}), '
+                      'Heading = ${snapshot.data?.heading ?? '-'}'),
                 ),
               ),
             );

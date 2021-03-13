@@ -4,9 +4,9 @@ import 'dart:developer' as developer;
 import 'package:http/http.dart' as http;
 
 class Pokemon {
-  final String name;
-  final String type;
-  final int id;
+  final String? name;
+  final String? type;
+  final int? id;
 
   const Pokemon(this.name, this.type, this.id);
   Pokemon.fromJson(Map json)
@@ -35,7 +35,8 @@ class PokemonService {
       developer.debugger(when: i > 100, message: 'too much pokemon!!');
 
       try {
-        var response = await http.get('https://pokeapi.co/api/v2/pokemon/$i/');
+        var response =
+            await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$i/'));
         if (response.statusCode != 200) {
           developer.log('Access to pokemon API returned error.',
               name: 'pokemonServices.pokemons', error: response.statusCode);

@@ -26,7 +26,7 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
 
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.headline2,
+      style: Theme.of(context).textTheme.headline2!,
       textAlign: TextAlign.center,
       child: FutureBuilder<String>(
         future: _calculation, // a previously-obtained Future<String> or null

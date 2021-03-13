@@ -18,7 +18,7 @@ class FirebaseScreen extends StatefulWidget {
 }
 
 class _FirebaseScreenState extends State<FirebaseScreen> {
-  int _selectedIndex = 0;
+  int? _selectedIndex = 0;
 
   static const userId = 'ybftiB2mepd0Eh8JljJI';
 
@@ -59,7 +59,7 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
                           Radio(
                             value: index,
                             groupValue: _selectedIndex,
-                            onChanged: (int value) {
+                            onChanged: (int? value) {
                               setState(() {
                                 _selectedIndex = value;
                               });
@@ -74,7 +74,7 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
             ),
             Padding(
                 padding: EdgeInsets.all(16.0),
-                child: info[_selectedIndex].builder(context)
+                child: info[_selectedIndex!].builder(context)
                 // Build the selected widget,
                 )
           ],

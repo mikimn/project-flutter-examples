@@ -32,7 +32,7 @@ class CameraDisplay extends StatefulWidget {
 }
 
 class _CameraDisplayState extends State<CameraDisplay> {
-  CameraController controller;
+  CameraController? controller;
   int currentCamera = 0;
 
   @override
@@ -40,7 +40,7 @@ class _CameraDisplayState extends State<CameraDisplay> {
     super.initState();
     controller = CameraController(
         widget.cameraDescriptions[currentCamera], ResolutionPreset.medium);
-    controller.initialize().then((_) {
+    controller!.initialize().then((_) {
       if (!mounted) {
         return;
       }
@@ -56,7 +56,7 @@ class _CameraDisplayState extends State<CameraDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
+    if (!controller!.value.isInitialized) {
       return Container();
     }
     return Stack(
@@ -65,8 +65,8 @@ class _CameraDisplayState extends State<CameraDisplay> {
           color: Colors.black,
           child: Center(
             child: AspectRatio(
-                aspectRatio: controller.value.aspectRatio,
-                child: CameraPreview(controller)),
+                aspectRatio: controller!.value.aspectRatio,
+                child: CameraPreview(controller!)),
           ),
         ),
         Positioned(
@@ -99,8 +99,8 @@ class _CameraDisplayState extends State<CameraDisplay> {
                           imageName,
                         );
 
-                        controller.takePicture(path).then((value) async {
-                          final File imageFile = File(path);
+                        controller!.takePicture().then((XFile file) async {
+                          final File imageFile = File(file.path);
                           _showImageDialog(context, imageFile);
                           return imageFile;
                         }).catchError((error) => print('Error: $error'));
@@ -116,21 +116,21 @@ class _CameraDisplayState extends State<CameraDisplay> {
 
   void selectNewCamera(CameraDescription cameraDescription) async {
     if (controller != null) {
-      await controller.dispose();
+      await controller!.dispose();
     }
     controller = CameraController(cameraDescription, ResolutionPreset.medium);
 
     // If the controller is updated then update the UI.
-    controller.addListener(() {
+    controller!.addListener(() {
       if (mounted) setState(() {});
-      if (controller.value.hasError) {
+      if (controller!.value.hasError) {
         // TODO Handle error
         // showInSnackBar('Camera error ${controller.value.errorDescription}');
       }
     });
 
     try {
-      await controller.initialize();
+      await controller!.initialize();
     } on CameraException catch (e) {
       // TODO Handle error
       // _showCameraException(e);

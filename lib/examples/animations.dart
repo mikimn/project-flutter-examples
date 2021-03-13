@@ -7,8 +7,8 @@ class AnimationsPageOne extends StatefulWidget {
 
 class _AnimationsPageOneState extends State<AnimationsPageOne>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _bounceAnimation;
+  late AnimationController _controller;
+  late Animation<double> _bounceAnimation;
 
   void initState() {
     super.initState();
@@ -57,13 +57,13 @@ class _AnimationsPageOneState extends State<AnimationsPageOne>
               width: 40.0,
               height: 40.0,
             ),
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext context, Widget? child) {
               return Column(
                 children: [
                   SizedBox(
                     height: (200 - distFromDeck),
                   ),
-                  child,
+                  child!,
                   SizedBox(
                     height: distFromDeck,
                   ),
@@ -93,16 +93,16 @@ class _AnimationsPageOneState extends State<AnimationsPageOne>
 }
 
 class AnimationsPageTwo extends StatelessWidget {
-  final Animation<double> transitionAnimation;
+  final Animation<double>? transitionAnimation;
 
   const AnimationsPageTwo({this.transitionAnimation});
 
   Widget _slidingContainer(
-      {@required Listenable animation,
-      @required Color color,
-      @required Offset startOffset,
-      @required Offset endOffset,
-      @required Interval animationCurve}) {
+      {required Listenable animation,
+      required Color color,
+      required Offset startOffset,
+      required Offset endOffset,
+      required Interval animationCurve}) {
     return AnimatedBuilder(
       animation: animation,
       child: Container(
@@ -115,7 +115,7 @@ class AnimationsPageTwo extends StatelessWidget {
           end: endOffset,
         ).animate(
           CurvedAnimation(
-            parent: animation,
+            parent: animation as Animation<double>,
             curve: animationCurve,
           ),
         ),
@@ -133,7 +133,7 @@ class AnimationsPageTwo extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: _slidingContainer(
-              animation: transitionAnimation,
+              animation: transitionAnimation!,
               color: Colors.purpleAccent,
               startOffset: Offset(1, 0),
               endOffset: Offset(0, 0),
@@ -142,7 +142,7 @@ class AnimationsPageTwo extends StatelessWidget {
           ),
           Expanded(
             child: _slidingContainer(
-              animation: transitionAnimation,
+              animation: transitionAnimation!,
               color: Colors.deepPurpleAccent,
               startOffset: Offset(-1, 0),
               endOffset: Offset(0, 0),

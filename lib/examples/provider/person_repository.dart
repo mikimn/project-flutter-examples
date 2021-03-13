@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Person with ChangeNotifier {
-  Person({this.name, this.age});
+  Person({required this.name, required this.age});
 
   final String name;
   int age;

@@ -58,10 +58,9 @@ class _PokemonListState extends State<_PokemonList> {
             builder: (context, snapshot) {
               return ListView.builder(
                   padding: const EdgeInsets.all(16),
+                  itemCount: _pokemons.length + 1,
                   itemBuilder: (BuildContext context, int index) {
-                    if (index > _pokemons.length) {
-                      return null;
-                    } else if (index == _pokemons.length) {
+                    if (index == _pokemons.length) {
                       return LinearProgressIndicator();
                     }
                     return _listElement(_pokemons[index]);
@@ -73,7 +72,7 @@ class _PokemonListState extends State<_PokemonList> {
     final liked = _liked.contains(pokemon);
     return ListTile(
       title: Text(
-        '${pokemon.name[0].toUpperCase() + pokemon.name.substring(1).toLowerCase()}',
+        '${pokemon.name![0].toUpperCase() + pokemon.name!.substring(1).toLowerCase()}',
         style: TextStyle(fontSize: 22),
       ),
       trailing: Icon(

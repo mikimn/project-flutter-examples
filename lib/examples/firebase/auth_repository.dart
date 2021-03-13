@@ -5,7 +5,7 @@ enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
 class AuthRepository with ChangeNotifier {
   FirebaseAuth _auth;
-  User _user;
+  User? _user;
   Status _status = Status.Uninitialized;
 
   AuthRepository.instance() : _auth = FirebaseAuth.instance {
@@ -16,11 +16,11 @@ class AuthRepository with ChangeNotifier {
 
   Status get status => _status;
 
-  User get user => _user;
+  User? get user => _user;
 
   bool get isAuthenticated => status == Status.Authenticated;
 
-  Future<UserCredential> signUp(String email, String password) async {
+  Future<UserCredential?> signUp(String email, String password) async {
     try {
       _status = Status.Authenticating;
       notifyListeners();
@@ -54,7 +54,7 @@ class AuthRepository with ChangeNotifier {
     return Future.delayed(Duration.zero);
   }
 
-  Future<void> _onAuthStateChanged(User firebaseUser) async {
+  Future<void> _onAuthStateChanged(User? firebaseUser) async {
     if (firebaseUser == null) {
       _status = Status.Unauthenticated;
     } else {

@@ -25,8 +25,8 @@ class Clock extends StatefulWidget {
 }
 
 class ClockState extends State<Clock> {
-  String _timeString;
-  Timer _timer;
+  late String _timeString;
+  late Timer _timer;
 
   @override
   void initState() {

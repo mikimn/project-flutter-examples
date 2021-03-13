@@ -13,9 +13,9 @@ class SliversPage extends StatelessWidget {
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
   });
   final double minHeight;
   final double maxHeight;
@@ -45,7 +45,7 @@ class CollapsingList extends StatefulWidget {
 }
 
 class _CollapsingListState extends State<CollapsingList> {
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _CollapsingListState extends State<CollapsingList> {
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController!.dispose();
     super.dispose();
   }
 
@@ -72,7 +72,7 @@ class _CollapsingListState extends State<CollapsingList> {
               headerText,
               style: Theme.of(context)
                   .textTheme
-                  .headline5
+                  .headline5!
                   .copyWith(color: Colors.white),
             ),
           ),
@@ -98,7 +98,7 @@ class _CollapsingListState extends State<CollapsingList> {
                 icon: const Icon(Icons.arrow_circle_down_outlined),
                 tooltip: 'Go down!',
                 onPressed: () {
-                  _scrollController.animateTo(_scrollController.offset + 300.0,
+                  _scrollController!.animateTo(_scrollController!.offset + 300.0,
                       duration: Duration(milliseconds: 250),
                       curve: Curves.easeInOut);
                 },

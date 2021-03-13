@@ -36,9 +36,9 @@ class GetUserName extends StatelessWidget {
 }
 
 class MyUser {
-  String firstName;
-  String lastName;
-  String occupation;
+  String? firstName;
+  String? lastName;
+  String? occupation;
 
   MyUser(this.firstName, this.lastName, this.occupation);
 
@@ -62,7 +62,7 @@ class GetAllUsers extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<MyUser>> snapshot) {
         // ...
         if (snapshot.connectionState == ConnectionState.done) {
-          List<MyUser> data = snapshot.data;
+          List<MyUser> data = snapshot.data!;
           print(data);
           return SizedBox(
             height: 200.0,
@@ -139,12 +139,12 @@ class GetAllUsersRealtime extends StatelessWidget {
           AsyncSnapshot<List<QueryDocumentSnapshot>> snapshot) {
         // ...
         if (snapshot.hasData) {
-          final List<QueryDocumentSnapshot> data = snapshot.data;
+          final List<QueryDocumentSnapshot> data = snapshot.data!;
           return SizedBox(
             height: 200.0,
             child: ListView.separated(
                 itemBuilder: (context, index) {
-                  final Map<String, dynamic> item = data[index].data();
+                  final Map<String, dynamic> item = data[index].data()!;
                   final userId = data[index].id;
                   return ListTile(
                     title: Text(
@@ -182,7 +182,7 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   static const FILE_NAME = 'avatar.png';
 
-  String _imageUrl;
+  String? _imageUrl;
 
   Future<String> _getImageUrl(String name) {
     return _storage.ref('images').child(name).getDownloadURL();
@@ -220,7 +220,7 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
                         height: 60.0,
                         child: Center(child: CircularProgressIndicator()))
                     : Image.network(
-                        _imageUrl,
+                        _imageUrl!,
                         height: 60.0,
                         width: 60.0,
                       ),
@@ -230,11 +230,11 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
                   label: Text('Upload new'),
                   onPressed: () async {
                     // Pick an image with the file_picker library
-                    FilePickerResult result = await FilePicker.platform
+                    FilePickerResult? result = await FilePicker.platform
                         .pickFiles(type: FileType.image);
 
                     if (result != null) {
-                      File file = File(result.files.single.path);
+                      File file = File(result.files.single.path!);
                       setState(() {
                         _imageUrl = null;
                       });
@@ -270,7 +270,7 @@ class _TransactionReadWriteState extends State<TransactionReadWrite> {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: StreamBuilder<Map<String, dynamic>>(
+        child: StreamBuilder<Map<String, dynamic>?>(
             stream: _db
                 .collection('counters')
                 .doc('global-counter')
@@ -284,7 +284,7 @@ class _TransactionReadWriteState extends State<TransactionReadWrite> {
                   OutlineButton(
                     highlightedBorderColor: Colors.green,
                     child: Text(
-                      '+ Counter (${snapshot.data['value']})',
+                      '+ Counter (${snapshot.data!['value']})',
                       style: TextStyle(color: Colors.green),
                     ),
                     onPressed: _doTransaction,
@@ -292,7 +292,7 @@ class _TransactionReadWriteState extends State<TransactionReadWrite> {
                   VerticalDivider(),
                   OutlineButton(
                     highlightedBorderColor: Colors.red,
-                    child: Text('- Counter (${snapshot.data['value']})',
+                    child: Text('- Counter (${snapshot.data!['value']})',
                         style: TextStyle(color: Colors.red)),
                     onPressed: () => _doTransaction(isSubstraction: true),
                   ),
@@ -320,8 +320,8 @@ class _TransactionReadWriteState extends State<TransactionReadWrite> {
           // Update the counter based on the current value
           // Note: this could be done without a transaction
           // by updating the field using FieldValue.increment()
-          int oldCount = snapshot.data()['value'];
-          int newCount = isSubstraction ? oldCount - 1 : oldCount + 1;
+          int? oldCount = snapshot.data()!['value'];
+          int newCount = isSubstraction ? oldCount! - 1 : oldCount! + 1;
 
           // Perform an update on the document
           transaction.update(documentReference, {'value': newCount});
