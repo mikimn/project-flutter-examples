@@ -10,6 +10,7 @@ import 'package:android_course/examples/networking/pokemon_page.dart';
 import 'package:android_course/examples/provider/person_screen.dart';
 import 'package:android_course/examples/ui/slivers.dart';
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((token) {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      return db
+          .collection('tokens')
+          .where('token', isEqualTo: token)
+          .get()
+          .then((snapshot) async {
+        if (snapshot.docs.isEmpty) {
+          return db
+              .collection('tokens')
+              .add({'token': token, 'registered_at': Timestamp.now()}).then(
+                  (value) => null);
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
