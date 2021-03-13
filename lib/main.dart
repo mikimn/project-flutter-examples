@@ -142,11 +142,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 .map((e) => Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
-                        child: RaisedButton(
+                        child: ElevatedButton(
                             onPressed: () {
                               Navigator.pushNamed(context, e.value);
                             },
-                            color: Colors.green,
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.green)),
                             child: Text(e.key)),
                       ),
                     ))
@@ -163,19 +165,17 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.info_outline_rounded),
               onPressed: () async {
                 PackageInfo packageInfo = await PackageInfo.fromPlatform();
-                if (packageInfo != null) {
-                  showAboutDialog(
-                      context: context,
-                      applicationName: 'Workshop Examples in Flutter',
-                      applicationVersion: packageInfo.version,
-                      applicationIcon: FlutterLogo(),
-                      applicationLegalese:
-                          'Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC'
-                          '\n\n'
-                          'The Technion logo is a trademark of the Technion, Israel Institue of Technology, and is used for academic purposes only'
-                          '\n\n'
-                          'App icon designed by Freepik from Flaticon');
-                }
+                showAboutDialog(
+                    context: context,
+                    applicationName: 'Workshop Examples in Flutter',
+                    applicationVersion: packageInfo.version,
+                    applicationIcon: FlutterLogo(),
+                    applicationLegalese:
+                        'Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC'
+                        '\n\n'
+                        'The Technion logo is a trademark of the Technion, Israel Institue of Technology, and is used for academic purposes only'
+                        '\n\n'
+                        'App icon designed by Freepik from Flaticon');
               },
             ),
           ),

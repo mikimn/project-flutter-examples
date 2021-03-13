@@ -225,7 +225,7 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
                         width: 60.0,
                       ),
                 VerticalDivider(),
-                RaisedButton.icon(
+                ElevatedButton.icon(
                   icon: Icon(Icons.cloud_upload),
                   label: Text('Upload new'),
                   onPressed: () async {
@@ -281,8 +281,7 @@ class _TransactionReadWriteState extends State<TransactionReadWrite> {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  OutlineButton(
-                    highlightedBorderColor: Colors.green,
+                  OutlinedButton(
                     child: Text(
                       '+ Counter (${snapshot.data!['value']})',
                       style: TextStyle(color: Colors.green),
@@ -290,8 +289,7 @@ class _TransactionReadWriteState extends State<TransactionReadWrite> {
                     onPressed: _doTransaction,
                   ),
                   VerticalDivider(),
-                  OutlineButton(
-                    highlightedBorderColor: Colors.red,
+                  OutlinedButton(
                     child: Text('- Counter (${snapshot.data!['value']})',
                         style: TextStyle(color: Colors.red)),
                     onPressed: () => _doTransaction(isSubstraction: true),

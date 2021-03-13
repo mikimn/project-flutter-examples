@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:android_course/examples/device/camera_repository.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as paths;
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class CameraExamplesPage extends StatelessWidget {
@@ -93,17 +91,14 @@ class _CameraDisplayState extends State<CameraDisplay> {
                       color: Colors.white,
                       icon: Icon(Icons.camera),
                       onPressed: () async {
-                        final String imageName = '${DateTime.now()}.png';
-                        final String path = paths.join(
-                          (await getTemporaryDirectory()).path,
-                          imageName,
-                        );
-
+                        // TODO: Save to gallery
                         controller!.takePicture().then((XFile file) async {
                           final File imageFile = File(file.path);
                           _showImageDialog(context, imageFile);
                           return imageFile;
-                        }).catchError((error) => print('Error: $error'));
+                        }).catchError((error) {
+                          print('Error: $error');
+                        });
                       })
                 ],
               ),
@@ -131,7 +126,7 @@ class _CameraDisplayState extends State<CameraDisplay> {
 
     try {
       await controller!.initialize();
-    } on CameraException catch (e) {
+    } on CameraException {
       // TODO Handle error
       // _showCameraException(e);
     }

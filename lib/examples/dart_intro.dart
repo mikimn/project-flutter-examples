@@ -1,49 +1,41 @@
 import 'dart:io';
 
-
 /// *********************** CONST VS FINAL ***********************
 void constVsFinalExample() {
-  var fullyMutable = [1,2,3];
+  var fullyMutable = [1, 2, 3];
   // Works fine
   fullyMutable[1] += 1;
   // Works fine
-  fullyMutable = [4,5];
+  fullyMutable = [4, 5];
 
-  final valuesAreMutable = [1,2,3];
+  final valuesAreMutable = [1, 2, 3];
   // Works fine
   valuesAreMutable[1] += 1;
   // Error: Can't assign to the final variable 'valuesAreMutable'.
   // valuesAreMutable = [4,5];
 
-  const fullyImmutable = [1,2,3];
+  const fullyImmutable = [1, 2, 3]; // ignore: unused_local_variable
   // Error: Unsupported operation: indexed set
   // fullyImmutable[1] += 1;
   // Error: Can't assign to the const variable 'fullyImmutable'.
   // fullyImmutable = [4,5];
 
-  var constValues = const [1,2,3];
+  var constValues = const [1, 2, 3]; // ignore: unused_local_variable
   // Error: Unsupported operation: indexed set
   // constValues[1] += 1;
   // Works fine
-  constValues = const [4,5];
+  constValues = const [4, 5];
   print("Finished well");
 }
 
-
 /// ******************* ASYNC/AWAIT HANDLING *******************
 Future<String> fetchUsername() async {
-  return Future.delayed(
-    Duration(seconds: 2),
-    () => 'XÆA-Xii'
-  );
+  return Future.delayed(Duration(seconds: 2), () => 'XÆA-Xii');
 }
 
 Future<String> logoutUser() async {
   // Succesful logout
-  return Future.delayed(
-    Duration(seconds: 2),
-    () => 'XÆA-Xii'
-  );
+  return Future.delayed(Duration(seconds: 2), () => 'XÆA-Xii');
 
   // Failed logout
   // throw Exception('Good catch');
@@ -58,7 +50,7 @@ Future<String> sayGoodbye() async {
   try {
     var result = await logoutUser();
     return '$result Thanks, see you next time';
-  } catch(e) {
+  } catch (e) {
     return 'Failed to logout user: $e';
   }
 }
@@ -67,7 +59,6 @@ void asyncAwaitExample() async {
   print(await greetUser());
   print(await sayGoodbye());
 }
-
 
 /// ****************** GENERATORS AND STREAMS ******************
 Iterable<int> syncCountDown(int number) sync* {
@@ -114,7 +105,6 @@ void streamExample() {
   print('Done Async...');
 }
 
-
 /// ******************* FACTORY CONSTRUCTORS *******************
 class Point {
   static final Map<String, Point> _cache = <String, Point>{};
@@ -122,8 +112,7 @@ class Point {
 
   factory Point(double x, double y) {
     print('Point factory called: $x,$y');
-    return _cache.putIfAbsent(
-      '$x,$y', () => Point._createInstance(x,y));
+    return _cache.putIfAbsent('$x,$y', () => Point._createInstance(x, y));
   }
 
   Point._createInstance(this.x, this.y) {
@@ -132,11 +121,10 @@ class Point {
 }
 
 void factoryCtorExample() {
-  var p1 = Point(1,2);
-  var p2 = Point(1,2);
-  var p3 = Point(123,342);
+  var p1 = Point(1, 2); // ignore: unused_local_variable
+  var p2 = Point(1, 2); // ignore: unused_local_variable
+  var p3 = Point(123, 342); // ignore: unused_local_variable
 }
-
 
 /// ******************* DART INTRO MAIN *******************
 void main() async {
