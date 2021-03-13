@@ -1,5 +1,9 @@
 # Workshop examples for Flutter
 
+[![Dart | Null safety](https://img.shields.io/badge/Dart-Null%20safety-blue.svg)](https://dart.dev/null-safety)
+
+___
+
 A Flutter application, containing various examples taught in class for the 
 Technion CS Faculty "Project in Android Development" course workshops.
 
