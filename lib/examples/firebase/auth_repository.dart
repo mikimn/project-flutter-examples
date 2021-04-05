@@ -56,6 +56,7 @@ class AuthRepository with ChangeNotifier {
 
   Future<void> _onAuthStateChanged(User? firebaseUser) async {
     if (firebaseUser == null) {
+      _user = null;
       _status = Status.Unauthenticated;
     } else {
       _user = firebaseUser;
