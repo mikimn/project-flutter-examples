@@ -12,7 +12,7 @@ class PersonScreen extends StatelessWidget {
             title: Text('Person Provider Example'),
           ),
           body: Center(
-            // A consumer for our person
+            // A consumer for our person is here
             child: Builder(builder: (context) => PersonInfo()),
           ),
           // A different consumer!

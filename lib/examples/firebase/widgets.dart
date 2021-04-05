@@ -201,7 +201,8 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
     super.initState();
     _getImageUrl(FILE_NAME).then((value) => setState(() {
           _imageUrl = value;
-        }));
+        })
+    );
   }
 
   @override
