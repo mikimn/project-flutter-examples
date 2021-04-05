@@ -71,7 +71,9 @@ class GetAllUsers extends StatelessWidget {
                   final MyUser item = data[index];
                   return ListTile(
                     title: Text(
-                        '${item.firstName} ${item.lastName}, ${item.occupation}'),
+                      '${item.firstName} ${item.lastName}, ${item.occupation}',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   );
                 },
                 separatorBuilder: (_, __) => Divider(),
@@ -148,7 +150,9 @@ class GetAllUsersRealtime extends StatelessWidget {
                   final userId = data[index].id;
                   return ListTile(
                     title: Text(
-                        '${item['first_name']} ${item['last_name']}, ${item['occupation']}'),
+                      '${item['first_name']} ${item['last_name']}, ${item['occupation']}',
+                      style: TextStyle(color: Colors.black),
+                    ),
                     leading: IconButton(
                       icon: Icon(Icons.thumb_down),
                       onPressed: () {
@@ -201,8 +205,7 @@ class _CloudStorageUploaderState extends State<CloudStorageUploader> {
     super.initState();
     _getImageUrl(FILE_NAME).then((value) => setState(() {
           _imageUrl = value;
-        })
-    );
+        }));
   }
 
   @override
